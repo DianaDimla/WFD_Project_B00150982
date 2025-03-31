@@ -1,0 +1,20 @@
+Case Study for WFD Project
+
+Theme: Food Use Case: Purchase Orders (PO – Items)
+
+- Online Grocery Store 
+Customers to browse and purchase groceries online.
+Vendors list their products, manage inventory, and fulfill orders.
+The system tracks orders, processes payments, and updates stock automatically.
+
+Actors (User Roles)
+1. Customer – Browses products, adds to cart, places orders.
+2. Vendor – Manages stock, updates product availability, fulfills orders.
+3. Admin – Oversees all operations, manages users, and resolves issues.
+
+Use Cases
+1. User Registration & Login (Customer & Vendor sign up/login)
+2. Browse and Search Products (Customers view product listings, filter by category)
+3. Add to Cart & Checkout (Customers add items to cart and place orders)
+4. Manage Inventory (Vendors update stock levels, remove out-of-stock items)
+5. Track Orders (Customers view order history and track delivery status)
