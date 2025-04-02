@@ -18,4 +18,4 @@ Use Cases
 3. Add to Cart & Checkout (Customers add items to cart and place orders)
 4. Manage Inventory (Vendors update stock levels, remove out-of-stock items)
 5. Track Orders (Customers and Vendors view order history and track delivery status)
-6. Admin (Manage System, upgrades)
+6. Admin (Manage System, Upgrades, Resolve Issues)
