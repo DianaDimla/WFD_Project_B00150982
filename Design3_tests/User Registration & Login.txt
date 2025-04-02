@@ -1,0 +1,16 @@
+1. User Registration & Login
+
+Feature: User Registration & Login
+Scenario: Customer successfully registers
+
+- Given the customer is on the registration page
+- When they enter valid details and submit
+- Then their account should be created
+- And they should be redirected to the homepage
+
+Scenario: Vendor successfully registers
+
+- Given the vendor is on the registration page
+- When they provide store details and submit
+- Then their account should be created
+- And they should be able to list products

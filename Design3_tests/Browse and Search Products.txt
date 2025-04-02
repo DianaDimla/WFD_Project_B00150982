@@ -1,0 +1,14 @@
+2. Browse and Search Products
+
+Feature: Product Browsing & Searching
+Scenario: Customer searches for a product
+
+- Given the customer is on the homepage
+- When they enter a product name in the search bar
+- Then relevant products should be displayed
+
+Scenario: Customer filters products by category
+
+- Given the customer is browsing products
+- When they select a category filter
+- Then only products from that category should be shown

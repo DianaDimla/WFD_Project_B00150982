@@ -1,0 +1,15 @@
+3. Add to Cart & Checkout
+
+Feature: Shopping Cart & Checkout
+Scenario: Customer adds a product to the cart
+
+- Given the customer is viewing a product
+- When they click “Add to Cart”
+- Then the product should appear in their cart
+
+Scenario: Customer completes checkout
+
+- Given the customer has items in their cart
+- When they proceed to checkout and confirm payment
+- Then an order should be created
+- And the stock should be updated
