@@ -1,0 +1,35 @@
+<h2>Browse Products</h2>
+
+<!-- Search Form -->
+<form method="get">
+  Search: <input type="text" name="q" placeholder="Search by name">
+  Category: <input type="text" name="category" placeholder="Search by category">
+  <input type="submit" value="Search">
+</form>
+
+<br><hr>
+
+<!-- Product List -->
+{% if products %}
+  <ul>
+    {% for product in products %}
+      <li>
+        <strong>{{ product.name }}</strong> - ${{ product.price }}<br>
+        {{ product.description }}<br>
+        Category: {{ product.category }} | Stock: {{ product.stock }}
+
+        <!-- Add to Cart Button -->
+        <form method="post" action="{% url 'add_to_cart' product.id %}">
+          {% csrf_token %}
+          <input type="submit" value="Add to Cart">
+        </form>
+      </li>
+      <br>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No products found.</p>
+{% endif %}
+
+<hr>
+<a href="{% url 'cart' %}">🛒 View Cart</a>

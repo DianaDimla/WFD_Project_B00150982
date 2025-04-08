@@ -1,0 +1,12 @@
+<h2>Customer Dashboard</h2>
+
+<p>Welcome, {{ user.username }}!</p>
+
+<ul>
+  <li><a href="{% url 'browse_products' %}">Browse Products</a></li>
+  <li><a href="{% url 'cart' %}">View Cart</a></li>
+  <li><a href="{% url 'order_history' %}">Order History</a></li>
+</ul>
+
+<br>
+<a href="{% url 'logout' %}">Logout</a>

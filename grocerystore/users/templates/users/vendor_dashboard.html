@@ -1,0 +1,11 @@
+<h2>Vendor Dashboard</h2>
+
+<p>Welcome, {{ user.username }}!</p>
+
+<ul>
+  <li><a href="{% url 'manage_inventory' %}">Manage Inventory</a></li>
+  <li><a href="{% url 'view_orders' %}">View Orders</a></li>
+</ul>
+
+<br>
+<a href="{% url 'logout' %}">Logout</a>
