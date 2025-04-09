@@ -82,5 +82,14 @@ def customer_dashboard(request):
 def vendor_dashboard(request):
     return render(request, 'users/vendor_dashboard.html')
 
+from .decorators import delivery_agent_required
+from django.contrib.auth.decorators import login_required
+
+@login_required
+@delivery_agent_required
+def delivery_dashboard(request):
+    return render(request, 'users/delivery_dashboard.html')
+
+
 
 

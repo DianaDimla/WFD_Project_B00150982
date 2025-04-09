@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from .models import Vendor, Customer
+from .models import DeliveryAgent
 
 class VendorInline(admin.StackedInline):
     model = Vendor
@@ -32,3 +33,4 @@ class CustomerAdmin(admin.ModelAdmin):
 # Unregister default User admin and register custom one
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(DeliveryAgent)

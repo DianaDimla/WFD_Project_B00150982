@@ -16,3 +16,10 @@ def vendor_required(view_func):
         else:
             return redirect('login')  # or an unauthorized page
     return wrapper_func
+
+def delivery_agent_required(view_func):
+    def wrapper_func(request, *args, **kwargs):
+        if hasattr(request.user, 'deliveryagent'):
+            return view_func(request, *args, **kwargs)
+        return HttpResponse("Access Denied: Delivery Agents only.")
+    return wrapper_func
