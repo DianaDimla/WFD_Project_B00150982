@@ -1,0 +1,27 @@
+<h2>Incoming Orders (Your Products)</h2>
+
+{% if order_items %}
+  <ul>
+    {% for item in order_items %}
+      <li>
+        <strong>Order #{{ item.order.id }}</strong><br>
+        Customer: {{ item.order.customer.user.username }}<br>
+        Product: {{ item.product.name }}<br>
+        Quantity: {{ item.quantity }}<br>
+        Status: 
+        {% if item.fulfilled %}
+          ✅ Fulfilled
+        {% else %}
+          ❌ Not Fulfilled 
+          <form method="post" action="{% url 'mark_fulfilled' item.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Mark Fulfilled</button>
+          </form>
+        {% endif %}
+        <hr>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No orders containing your products yet.</p>
+{% endif %}

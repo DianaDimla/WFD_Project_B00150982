@@ -1,0 +1,22 @@
+<h2>Order History</h2>
+
+{% if orders %}
+  {% for order in orders %}
+    <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+      <strong>Order ID:</strong> {{ order.id }}<br>
+      <strong>Date:</strong> {{ order.created_at }}<br>
+      <strong>Status:</strong> {{ order.status }}<br>
+      <strong>Items:</strong>
+      <ul>
+        {% for item in order.details.all %}
+          <li>{{ item.product.name }} — ${{ item.price_at_purchase }} x {{ item.quantity }}</li>
+        {% endfor %}
+      </ul>
+      <a href="{% url 'track_order' order.id %}">📍 Track This Order</a>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>You have not placed any orders yet.</p>
+{% endif %}
+
+<a href="{% url 'browse_products' %}">🛒 Back to Shopping</a>

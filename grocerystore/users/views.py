@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from .models import Customer, Vendor
+from django.contrib.auth.decorators import login_required
+from .decorators import delivery_agent_required
 
 def customer_register(request):
     if request.method == 'POST':
@@ -89,6 +91,8 @@ from django.contrib.auth.decorators import login_required
 @delivery_agent_required
 def delivery_dashboard(request):
     return render(request, 'users/delivery_dashboard.html')
+
+
 
 
 

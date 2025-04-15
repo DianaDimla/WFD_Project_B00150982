@@ -1,0 +1,21 @@
+<h2>Track Your Order</h2>
+
+<p><strong>Order ID:</strong> {{ order.id }}</p>
+<p><strong>Status:</strong> {{ order.status }}</p>
+<p><strong>Placed On:</strong> {{ order.created_at }}</p>
+
+{% if order.delivery_agent %}
+  <p><strong>Assigned Delivery Agent:</strong> {{ order.delivery_agent.user.username }}</p>
+  <p><strong>Region:</strong> {{ order.delivery_agent.region }}</p>
+{% else %}
+  <p><em>This order has not been assigned to a delivery agent yet.</em></p>
+{% endif %}
+
+<h3>Order Items:</h3>
+<ul>
+  {% for item in order.details.all %}
+    <li>{{ item.product.name }} – ${{ item.price_at_purchase }} x {{ item.quantity }}</li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'order_history' %}">← Back to Order History</a>

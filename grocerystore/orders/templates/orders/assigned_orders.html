@@ -1,0 +1,15 @@
+<h2>Your Assigned Orders</h2>
+
+{% if orders %}
+  <ul>
+    {% for order in orders %}
+      <li>
+        Order #{{ order.id }} | Status: {{ order.status }}
+        <br>
+        <a href="{% url 'order_detail_delivery' order.id %}">View Details</a>
+      </li><br>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No orders assigned yet.</p>
+{% endif %}

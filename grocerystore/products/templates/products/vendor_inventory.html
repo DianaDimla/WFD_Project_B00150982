@@ -1,0 +1,23 @@
+<h2>Your Inventory</h2>
+
+<a href="{% url 'add_product' %}">➕ Add New Product</a>
+
+{% if products %}
+  <ul>
+    {% for product in products %}
+      <li>
+        <strong>{{ product.name }}</strong> - ${{ product.price }} | Stock: {{ product.stock }}
+        <br>
+        <a href="{% url 'edit_product' product.id %}">✏️ Edit</a> |
+        <a href="{% url 'delete_product' product.id %}">🗑️ Delete</a>
+      </li><br>
+      <form method="post" action="{% url 'update_stock' product.id %}">
+        {% csrf_token %}
+        Stock: <input type="number" name="stock" value="{{ product.stock }}" min="0" style="width:60px;">
+        <button type="submit">Update</button>
+      </form>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>You have no products yet.</p>
+{% endif %}

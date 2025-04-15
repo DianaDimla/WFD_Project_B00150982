@@ -11,6 +11,11 @@
           {% csrf_token %}
           <button type="submit">Remove</button>
         </form>
+        <form method="post" action="{% url 'checkout' %}">
+          {% csrf_token %}
+          <input type="submit" value="Proceed to Checkout">
+      </form>
+      
       </li>
       <br>
     {% endfor %}
