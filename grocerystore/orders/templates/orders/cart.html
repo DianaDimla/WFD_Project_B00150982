@@ -1,27 +1,49 @@
-<h2>Your Cart</h2>
+{% extends 'base.html' %}
+{% block title %}Your Cart{% endblock %}
+{% block content %}
 
-{% if cart_items %}
-  <ul>
-    {% for item in cart_items %}
-      <li>
-        {{ item.product.name }} - ${{ item.product.price }} x {{ item.quantity }} = <strong>${{ item.total }}</strong>
-        
-        <!-- Remove from cart button -->
-        <form method="post" action="{% url 'remove_from_cart' item.product.id %}" style="display:inline;">
-          {% csrf_token %}
-          <button type="submit">Remove</button>
-        </form>
-        <form method="post" action="{% url 'checkout' %}">
-          {% csrf_token %}
-          <input type="submit" value="Proceed to Checkout">
-      </form>
-      
-      </li>
-      <br>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Your cart is empty.</p>
-{% endif %}
+<div class="container mt-5">
+  <h2 class="mb-4">🛒 Your Shopping Cart</h2>
 
-<a href="{% url 'browse_products' %}">Continue Shopping</a>
+  {% if cart_items %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Product</th>
+            <th>Price ($)</th>
+            <th>Quantity</th>
+            <th>Subtotal ($)</th>
+            <th>Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+          <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.subtotal }}</td>
+            <td>
+              <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-danger">✖️</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="text-end mt-4">
+      <h4>Total: <strong>${{ total }}</strong></h4>
+      <a href="{% url 'checkout' %}" class="btn btn-success btn-lg mt-3">Proceed to Checkout</a>
+    </div>
+
+  {% else %}
+    <div class="alert alert-info">Your cart is currently empty.</div>
+  {% endif %}
+</div>
+
+{% endblock %}

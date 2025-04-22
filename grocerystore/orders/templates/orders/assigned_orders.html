@@ -1,15 +1,53 @@
-<h2>Your Assigned Orders</h2>
+{% extends 'base.html' %}
+{% block title %}Assigned Deliveries{% endblock %}
+{% block content %}
 
-{% if orders %}
-  <ul>
-    {% for order in orders %}
-      <li>
-        Order #{{ order.id }} | Status: {{ order.status }}
-        <br>
-        <a href="{% url 'order_detail_delivery' order.id %}">View Details</a>
-      </li><br>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No orders assigned yet.</p>
-{% endif %}
+<div class="container mt-5">
+  <h2 class="mb-4">🛵 Assigned Orders for Delivery</h2>
+
+  {% if orders %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Region</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Update</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>#{{ order.id }}</td>
+            <td>{{ order.customer.user.username }}</td>
+            <td>{{ order.customer.address }}</td>
+            <td>{{ order.created_at|date:"M d, Y" }}</td>
+            <td>{{ order.status }}</td>
+            <td>
+              {% if order.status != 'Delivered' %}
+              <form method="post" action="{% url 'update_delivery_status' order.id %}">
+                {% csrf_token %}
+                <select name="status" class="form-select form-select-sm d-inline w-auto">
+                  <option value="Out for Delivery">Out for Delivery</option>
+                  <option value="Delivered">Delivered</option>
+                </select>
+                <button type="submit" class="btn btn-sm btn-primary">Update</button>
+              </form>
+              {% else %}
+              <span class="badge bg-success">Delivered</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info">No orders assigned for delivery.</div>
+  {% endif %}
+</div>
+
+{% endblock %}

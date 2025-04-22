@@ -1,35 +1,49 @@
-<h2>Browse Products</h2>
+{% extends 'base.html' %}
+{% block title %}Browse Products{% endblock %}
+{% block content %}
 
-<!-- Search Form -->
-<form method="get">
-  Search: <input type="text" name="q" placeholder="Search by name">
-  Category: <input type="text" name="category" placeholder="Search by category">
-  <input type="submit" value="Search">
-</form>
+<div class="container mt-5">
+  <h2 class="mb-4">🛒 Browse Our Products</h2>
 
-<br><hr>
+  <!-- Search/Filter Form -->
+  <form method="get" class="row g-3 mb-4">
+    <div class="col-md-5">
+      <input type="text" name="q" class="form-control" placeholder="Search by name" value="{{ request.GET.q }}">
+    </div>
+    <div class="col-md-5">
+      <input type="text" name="category" class="form-control" placeholder="Filter by category" value="{{ request.GET.category }}">
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-success w-100">Search</button>
+    </div>
+  </form>
 
-<!-- Product List -->
-{% if products %}
-  <ul>
-    {% for product in products %}
-      <li>
-        <strong>{{ product.name }}</strong> - ${{ product.price }}<br>
-        {{ product.description }}<br>
-        Category: {{ product.category }} | Stock: {{ product.stock }}
+  <!-- Product List -->
+  {% if products %}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {% for product in products %}
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">${{ product.price }}</h6>
+              <p class="card-text">{{ product.description }}</p>
+              <p><strong>Category:</strong> {{ product.category }}</p>
+              <p><strong>Stock:</strong> {{ product.stock }}</p>
 
-        <!-- Add to Cart Button -->
-        <form method="post" action="{% url 'add_to_cart' product.id %}">
-          {% csrf_token %}
-          <input type="submit" value="Add to Cart">
-        </form>
-      </li>
-      <br>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No products found.</p>
-{% endif %}
+              <!-- Add to Cart -->
+              <form method="post" action="{% url 'add_to_cart' product.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-sm">Add to Cart</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info mt-4">No products found.</div>
+  {% endif %}
+</div>
 
-<hr>
-<a href="{% url 'cart' %}">🛒 View Cart</a>
+{% endblock %}

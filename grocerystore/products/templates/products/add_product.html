@@ -1,5 +1,47 @@
-<h2>Add Product</h2>
-<form method="post">{% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Add Product">
-</form>
+{% extends 'base.html' %}
+{% block title %}Add Product{% endblock %}
+{% block content %}
+
+<div class="container mt-5">
+  <h2 class="mb-4 text-center">➕ Add New Product</h2>
+
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+
+  <form method="post" class="card p-4 shadow-sm col-md-8 mx-auto">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label for="name" class="form-label">Product Name</label>
+      <input type="text" name="name" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea name="description" class="form-control" rows="3" required></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="price" class="form-label">Price ($)</label>
+      <input type="number" step="0.01" name="price" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="category" class="form-label">Category</label>
+      <input type="text" name="category" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="stock" class="form-label">Stock</label>
+      <input type="number" name="stock" class="form-control" required>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <a href="{% url 'vendor_inventory' %}" class="btn btn-outline-secondary">← Cancel</a>
+      <button type="submit" class="btn btn-success">✅ Add Product</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

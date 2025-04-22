@@ -1,8 +1,40 @@
-<h2>Customer Signup</h2>
-<form method="post">{% csrf_token %}
-  Username: <input type="text" name="username"><br>
-  Password: <input type="password" name="password"><br>
-  Address: <input type="text" name="address"><br>
-  Phone: <input type="text" name="phone"><br>
-  <input type="submit" value="Register">
-</form>
+{% extends 'base.html' %}
+{% block title %}Customer Registration{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center mt-5">
+  <div class="col-md-6">
+    <h2 class="text-center mb-4">🛒 Register as Customer</h2>
+
+    {% if error %}
+      <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" class="card p-4 shadow-sm">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" required>
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Address</label>
+        <textarea name="address" class="form-control" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone</label>
+        <input type="text" name="phone" class="form-control" required>
+      </div>      
+      <button type="submit" class="btn btn-success w-100">Register</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

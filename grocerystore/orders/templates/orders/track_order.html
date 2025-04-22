@@ -1,21 +1,27 @@
-<h2>Track Your Order</h2>
+{% extends 'base.html' %}
+{% block title %}Track Order{% endblock %}
+{% block content %}
 
-<p><strong>Order ID:</strong> {{ order.id }}</p>
-<p><strong>Status:</strong> {{ order.status }}</p>
-<p><strong>Placed On:</strong> {{ order.created_at }}</p>
+<div class="container mt-5">
+  <div class="card p-4 shadow-sm col-md-8 mx-auto">
+    <h3 class="mb-3">📦 Tracking Order #{{ order.id }}</h3>
+    <p><strong>Status:</strong> {{ order.status }}</p>
+    <p><strong>Placed On:</strong> {{ order.created_at|date:"M d, Y - H:i" }}</p>
+    <p><strong>Total:</strong> ${{ order.total }}</p>
 
-{% if order.delivery_agent %}
-  <p><strong>Assigned Delivery Agent:</strong> {{ order.delivery_agent.user.username }}</p>
-  <p><strong>Region:</strong> {{ order.delivery_agent.region }}</p>
-{% else %}
-  <p><em>This order has not been assigned to a delivery agent yet.</em></p>
-{% endif %}
+    <hr>
+    <h5>Items:</h5>
+    <ul class="list-group">
+      {% for item in order.items.all %}
+        <li class="list-group-item d-flex justify-content-between">
+          {{ item.product.name }} × {{ item.quantity }}
+          <span>${{ item.subtotal }}</span>
+        </li>
+      {% endfor %}
+    </ul>
 
-<h3>Order Items:</h3>
-<ul>
-  {% for item in order.details.all %}
-    <li>{{ item.product.name }} – ${{ item.price_at_purchase }} x {{ item.quantity }}</li>
-  {% endfor %}
-</ul>
+    <a href="{% url 'order_history' %}" class="btn btn-secondary mt-4">← Back to Order History</a>
+  </div>
+</div>
 
-<a href="{% url 'order_history' %}">← Back to Order History</a>
+{% endblock %}

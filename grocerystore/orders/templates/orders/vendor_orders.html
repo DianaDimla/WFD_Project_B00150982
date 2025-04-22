@@ -1,27 +1,49 @@
-<h2>Incoming Orders (Your Products)</h2>
+{% extends 'base.html' %}
+{% block title %}Vendor Orders{% endblock %}
+{% block content %}
 
-{% if order_items %}
-  <ul>
-    {% for item in order_items %}
-      <li>
-        <strong>Order #{{ item.order.id }}</strong><br>
-        Customer: {{ item.order.customer.user.username }}<br>
-        Product: {{ item.product.name }}<br>
-        Quantity: {{ item.quantity }}<br>
-        Status: 
-        {% if item.fulfilled %}
-          ✅ Fulfilled
-        {% else %}
-          ❌ Not Fulfilled 
-          <form method="post" action="{% url 'mark_fulfilled' item.id %}" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit">Mark Fulfilled</button>
-          </form>
-        {% endif %}
-        <hr>
-      </li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>No orders containing your products yet.</p>
-{% endif %}
+<div class="container mt-5">
+  <h2 class="mb-4">📦 Incoming Orders</h2>
+
+  {% if orders %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Mark Fulfilled</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>#{{ order.id }}</td>
+            <td>{{ order.customer.user.username }}</td>
+            <td>{{ order.created_at|date:"M d, Y" }}</td>
+            <td>${{ order.total }}</td>
+            <td>{{ order.status }}</td>
+            <td>
+              {% if order.status != 'Fulfilled' %}
+              <form method="post" action="{% url 'fulfill_order' order.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-success">✔ Fulfill</button>
+              </form>
+              {% else %}
+              <span class="badge bg-success">Fulfilled</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info">No incoming orders at this time.</div>
+  {% endif %}
+</div>
+
+{% endblock %}

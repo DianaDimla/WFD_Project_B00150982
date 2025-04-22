@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+  .full-page-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+  }
+  .content-overlay {
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+</style>
+
+<img src="{% static 'images/homepage.jpeg' %}" alt="Grocery Banner" class="full-page-image">
+
+<div class="content-overlay text-white text-center d-flex flex-column justify-content-center align-items-center" style="height: 100vh;">
+  <h1 class="display-4 fw-bold" style="color: black;">Welcome to Organic Grocery Store</h1>
+  <p class="lead" style="color: black;">Fresh. Fast. Delivered to your door.</p>
+  
+  {% if user.is_authenticated %}
+    <a href="{% url 'browse_products' %}" class="btn btn-success btn-lg mt-3">Start Shopping</a>
+  {% else %}
+  <a href="{% url 'login' %}" class="btn btn-primary btn-lg mt-3 me-2" style="background-color: darkgreen; border-color: darkgreen;">Login</a>
+  <a href="{% url 'choose_registration' %}" class="btn btn-outline-success btn-lg mt-3">Register</a>  
+  {% endif %}
+</div>
+{% endblock %}

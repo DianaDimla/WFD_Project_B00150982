@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     address = models.TextField(default='', blank=True)
     phone = models.CharField(max_length=15, default='', blank=True)
 
@@ -15,7 +15,8 @@ class Vendor(models.Model):
         User, 
         on_delete=models.CASCADE,
         related_name='vendor',
-        blank=True  # Allows null during creation
+        blank=True,  # Allows null during creation
+        null=True
     )
     store_name = models.CharField(max_length=100, default='New Store')
     phone = models.CharField(max_length=15, default='', blank=True)

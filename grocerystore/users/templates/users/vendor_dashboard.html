@@ -1,11 +1,15 @@
-<h2>Vendor Dashboard</h2>
+{% extends 'base.html' %}
+{% block title %}Vendor Dashboard{% endblock %}
+{% block content %}
 
-<p>Welcome, {{ user.username }}!</p>
+<div class="text-center mt-5">
+  <h2 class="mb-4">📦 Vendor Dashboard</h2>
 
-<ul>
-  <li><a href="{% url 'manage_inventory' %}">Manage Inventory</a></li>
-  <li><a href="{% url 'view_orders' %}">View Orders</a></li>
-</ul>
+  <div class="d-grid gap-3 col-6 mx-auto">
+    <a href="{% url 'vendor_inventory' %}" class="btn btn-primary btn-lg">📋 Manage Inventory</a>
+    <a href="{% url 'vendor_orders' %}" class="btn btn-outline-success btn-lg">📦 View Orders</a>
+    <a href="{% url 'logout' %}" class="btn btn-danger btn-lg">🚪 Logout</a>
+  </div>
+</div>
 
-<br>
-<a href="{% url 'logout' %}">Logout</a>
+{% endblock %}

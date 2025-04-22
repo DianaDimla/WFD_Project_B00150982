@@ -1,12 +1,15 @@
-<h2>Customer Dashboard</h2>
+{% extends 'base.html' %}
+{% block title %}Customer Dashboard{% endblock %}
+{% block content %}
 
-<p>Welcome, {{ user.username }}!</p>
+<div class="text-center mt-5">
+  <h2 class="mb-4">👋 Welcome, {{ user.username }}!</h2>
 
-<ul>
-  <li><a href="{% url 'browse_products' %}">Browse Products</a></li>
-  <li><a href="{% url 'cart' %}">View Cart</a></li>
-  <li><a href="{% url 'order_history' %}">Order History</a></li>
-</ul>
+  <div class="d-grid gap-3 col-6 mx-auto">
+    <a href="{% url 'browse_products' %}" class="btn btn-primary btn-lg">🛍️ Browse Products</a>
+    <a href="{% url 'order_history' %}" class="btn btn-outline-success btn-lg">📜 Order History</a>
+    <a href="{% url 'logout' %}" class="btn btn-danger btn-lg">🚪 Logout</a>
+  </div>
+</div>
 
-<br>
-<a href="{% url 'logout' %}">Logout</a>
+{% endblock %}

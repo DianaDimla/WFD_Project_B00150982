@@ -1,24 +1,53 @@
-<h2>Order #{{ order.id }}</h2>
+{% extends 'base.html' %}
+{% block title %}Delivery Order Details{% endblock %}
+{% block content %}
 
-<p><strong>Status:</strong> {{ order.status }}</p>
-<p><strong>Customer:</strong> {{ order.customer.user.username }}</p>
-<p><strong>Date:</strong> {{ order.created_at }}</p>
+<div class="container mt-5">
+  <div class="card p-4 shadow-sm col-md-10 mx-auto">
+    <h3 class="mb-3">🚚 Delivery for Order #{{ order.id }}</h3>
 
-<h3>Items:</h3>
-<ul>
-  {% for item in order.details.all %}
-    <li>{{ item.product.name }} — {{ item.quantity }}</li>
-  {% endfor %}
-</ul>
+    <div class="mb-3">
+      <p><strong>Status:</strong> {{ order.status }}</p>
+      <p><strong>Placed on:</strong> {{ order.created_at|date:"M d, Y - H:i" }}</p>
+      <p><strong>Total:</strong> ${{ order.total }}</p>
+    </div>
 
-<form method="post">
-  {% csrf_token %}
-  <label for="status">Update Status:</label>
-  <select name="status">
-    <option value="In Transit" {% if order.status == 'In Transit' %}selected{% endif %}>In Transit</option>
-    <option value="Delivered" {% if order.status == 'Delivered' %}selected{% endif %}>Delivered</option>
-  </select>
-  <button type="submit">Update</button>
-</form>
+    <hr>
 
-<a href="{% url 'assigned_orders' %}">← Back to Assigned Orders</a>
+    <h5 class="mb-3">📦 Items to Deliver:</h5>
+    <ul class="list-group mb-4">
+      {% for item in order.items.all %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ item.product.name }} × {{ item.quantity }}
+          <span>${{ item.subtotal }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <h5 class="mb-3">📍 Customer Information:</h5>
+    <div class="mb-2"><strong>Name:</strong> {{ order.customer.user.username }}</div>
+    <div class="mb-2"><strong>Phone:</strong> {{ order.customer.phone }}</div>
+    <div class="mb-2"><strong>Address:</strong> {{ order.customer.address }}</div>
+
+    <hr>
+
+    <div class="d-flex justify-content-between">
+      <a href="{% url 'assigned_orders' %}" class="btn btn-outline-secondary">← Back</a>
+
+      {% if order.status != 'Delivered' %}
+      <form method="post" action="{% url 'update_delivery_status' order.id %}">
+        {% csrf_token %}
+        <select name="status" class="form-select form-select-sm d-inline w-auto me-2">
+          <option value="Out for Delivery">Out for Delivery</option>
+          <option value="Delivered">Delivered</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Update Status</button>
+      </form>
+      {% else %}
+      <span class="badge bg-success p-2">Delivered</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
