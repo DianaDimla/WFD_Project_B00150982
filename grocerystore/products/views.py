@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django import forms
 
 from .models import Product
+from .forms import ProductForm
 from users.models import Vendor
 
 def browse_products(request):
@@ -30,11 +31,6 @@ def vendor_inventory(request):
     products = Product.objects.filter(vendor=vendor)
     return render(request, 'products/vendor_inventory.html', {'products': products})
 
-class ProductForm(forms.ModelForm):
-    class Meta:
-        model = Product
-        fields = ['name', 'description', 'price', 'category', 'stock', 'is_available']
-
 @login_required
 def add_product(request):
     try:
@@ -43,12 +39,13 @@ def add_product(request):
         return redirect('login')
 
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(commit=False)
             product.vendor = vendor
+            product.is_available = True
             product.save()
-            return redirect('vendor_inventory')
+            return redirect('browse_products')
     else:
         form = ProductForm()
 
@@ -64,9 +61,14 @@ def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id, vendor=vendor)
 
     if request.method == 'POST':
-        form = ProductForm(request.POST, instance=product)
+        form = ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
-            form.save()
+            product = form.save(commit=False)
+            product.is_available = True
+            # Assign uploaded image file explicitly to ensure it is saved
+            if 'image' in form.cleaned_data:
+                product.image = form.cleaned_data['image']
+            product.save()
             return redirect('vendor_inventory')
     else:
         form = ProductForm(instance=product)

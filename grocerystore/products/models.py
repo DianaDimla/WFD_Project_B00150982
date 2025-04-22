@@ -13,6 +13,7 @@ class Product(models.Model):
     category = models.CharField(max_length=50, default='general')
     stock = models.IntegerField(default=0)
     is_available = models.BooleanField(default=True)
+    image = models.ImageField(upload_to='product_images/', blank=True, null=True)
     vendor = models.ForeignKey(
         Vendor, 
         on_delete=models.CASCADE,

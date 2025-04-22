@@ -36,15 +36,31 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
           {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'browse_products' %}">Shop</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'cart' %}">Cart</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-            </li>
+            {% if user.vendor or user.deliveryagent %}
+              <li class="nav-item">
+                {% if user.vendor %}
+                  <a class="nav-link" href="{% url 'vendor_dashboard' %}">Dashboard</a>
+                {% elif user.deliveryagent %}
+                  <a class="nav-link" href="{% url 'delivery_dashboard' %}">Dashboard</a>
+                {% endif %}
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+              </li>
+            {% elif user.customer %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'browse_products' %}">Shop</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'cart' %}">Cart</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'customer_dashboard' %}">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+              </li>
+            {% endif %}
           {% else %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'login' %}">Login</a>
