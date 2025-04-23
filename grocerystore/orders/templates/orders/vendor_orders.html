@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 {% block title %}Vendor Orders{% endblock %}
 {% block content %}
 
 <div class="container mt-5">
   <h2 class="mb-4">📦 Incoming Orders</h2>
 
-  {% if orders %}
+  {% if order_details %}
     <div class="table-responsive">
       <table class="table table-bordered table-striped align-middle">
         <thead class="table-dark">
@@ -19,21 +20,27 @@
           </tr>
         </thead>
         <tbody>
-          {% for order in orders %}
+          {% for od in order_details %}
           <tr>
-            <td>#{{ order.id }}</td>
-            <td>{{ order.customer.user.username }}</td>
-            <td>{{ order.created_at|date:"M d, Y" }}</td>
-            <td>${{ order.total }}</td>
-            <td>{{ order.status }}</td>
+            <td>#{{ od.order.id }}</td>
+            <td>{{ od.order.customer.user.username }}</td>
+            <td>{{ od.order.created_at|date:"M d, Y" }}</td>
+            <td>${{ orders_totals|default_if_none:0|dict_get:od.order.id }}</td>
             <td>
-              {% if order.status != 'Fulfilled' %}
-              <form method="post" action="{% url 'fulfill_order' order.id %}">
+              {% if od.fulfilled %}
+                <span class="badge bg-success">Fulfilled</span>
+              {% else %}
+                <span class="badge bg-warning">Pending</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if not od.fulfilled %}
+              <form method="post" action="{% url 'fulfill_order' od.id %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-sm btn-success">✔ Fulfill</button>
               </form>
               {% else %}
-              <span class="badge bg-success">Fulfilled</span>
+                <span class="text-success">✔ Fulfilled</span>
               {% endif %}
             </td>
           </tr>

@@ -12,7 +12,7 @@
     <hr>
     <h5>Items:</h5>
     <ul class="list-group">
-      {% for item in order.items.all %}
+      {% for item in order.items %}
         <li class="list-group-item d-flex justify-content-between">
           {{ item.product.name }} × {{ item.quantity }}
           <span>${{ item.subtotal }}</span>

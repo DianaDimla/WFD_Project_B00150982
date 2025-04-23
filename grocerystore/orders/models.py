@@ -7,6 +7,12 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     status = models.CharField(max_length=50, default="Pending")
     delivery_agent = models.ForeignKey('users.DeliveryAgent', null=True, blank=True, on_delete=models.SET_NULL)
+    delivery_address = models.TextField(blank=True, null=True)
+    payment_method = models.CharField(max_length=50, choices=[
+    ('Card', 'Credit/Debit Card'),
+    ('COD', 'Cash on Delivery')
+    ], default='Card')
+
 
     def __str__(self):
         return f"Order #{self.id} by {self.customer.user.username}"

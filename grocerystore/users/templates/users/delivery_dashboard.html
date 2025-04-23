@@ -6,11 +6,7 @@
   <h2 class="mb-4">🛵 Delivery Agent Dashboard</h2>
 
   <div class="d-grid gap-3 col-6 mx-auto">
-    <a href="{% url 'assigned_orders' %}" class="btn btn-outline-warning btn-lg">📦 Assigned Orders</a>
-    <form action="{% url 'track_order' 0 %}" method="get" class="d-flex justify-content-center">
-      <input type="number" name="order_id" placeholder="Enter Order ID" class="form-control me-2" required>
-      <button type="submit" class="btn btn-outline-info btn-lg">🔍 Track Order</button>
-    </form>
+    <a href="{% url 'assigned_orders' %}" class="btn btn-outline-warning btn-lg">📦 View Orders</a>
     <a href="{% url 'logout' %}" class="btn btn-danger btn-lg">🚪 Logout</a>
   </div>
 </div>
