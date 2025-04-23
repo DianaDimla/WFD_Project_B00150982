@@ -1,4 +1,4 @@
-(function($) {
+/*(function($) {
 
   "use strict";
 
@@ -162,4 +162,4 @@
 
   }); // End of a document
 
-})(jQuery);
+})(jQuery); */

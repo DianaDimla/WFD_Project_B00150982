@@ -50,3 +50,9 @@ https://shop.supervalu.ie/sm/delivery/rsid/5550/product/supervalu-mature-red-che
 
 svbtter.jpg
 https://shop.supervalu.ie/sm/delivery/rsid/5550/product/supervalu-irish-creamery-butter-454-g-id-1000941000
+
+Added Bootstrap Template in Project (Ended up changing it)
+https://themewagon.com/themes/organic/
+
+Bootstrap 5.3 (Latest stable)
+https://getbootstrap.com
