@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+# URL patterns for user-related views including login, logout, registration, and dashboards
 urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('logout/', views.user_logout, name='logout'),

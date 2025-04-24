@@ -5,6 +5,7 @@ from .models import Customer, Vendor
 from django.contrib.auth.decorators import login_required
 from .decorators import delivery_agent_required
 
+# View for customer registration handling form submission and user creation
 def customer_register(request):
     if request.method == 'POST':
         try:
@@ -28,6 +29,7 @@ def customer_register(request):
                        {'error': str(e)})
     return render(request, 'users/customer_register.html')
 
+# View for vendor registration handling form submission and user creation
 def vendor_register(request):
     if request.method == 'POST':
         try:
@@ -51,6 +53,7 @@ def vendor_register(request):
                        {'error': str(e)})
     return render(request, 'users/vendor_register.html')
 
+# View for delivery agent registration handling form submission and user creation
 def delivery_register(request):
     if request.method == 'POST':
         try:
@@ -76,6 +79,7 @@ def delivery_register(request):
 
 from django.contrib.auth import authenticate, login, logout
 
+# View for user login handling authentication and redirecting to appropriate dashboard
 def user_login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -94,6 +98,7 @@ def user_login(request):
             return render(request, 'users/login.html', {'error': 'Invalid credentials'})
     return render(request, 'users/login.html')
 
+# View for user logout and redirect to login page
 def user_logout(request):
     logout(request)
     return redirect('login')
@@ -101,11 +106,13 @@ def user_logout(request):
 from django.contrib.auth.decorators import login_required
 from users.decorators import customer_required, vendor_required
 
+# Dashboard view for logged-in customers
 @login_required
 @customer_required
 def customer_dashboard(request):
     return render(request, 'users/customer_dashboard.html')
 
+# Dashboard view for logged-in vendors
 @login_required
 @vendor_required
 def vendor_dashboard(request):
@@ -114,11 +121,13 @@ def vendor_dashboard(request):
 from .decorators import delivery_agent_required
 from django.contrib.auth.decorators import login_required
 
+# Dashboard view for logged-in delivery agents
 @login_required
 @delivery_agent_required
 def delivery_dashboard(request):
     return render(request, 'users/delivery_dashboard.html')
 
+# View to choose registration type
 def choose_registration(request):
     return render(request, 'users/choose_registration.html')
 

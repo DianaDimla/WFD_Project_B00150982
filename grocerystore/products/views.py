@@ -7,6 +7,7 @@ from .models import Product
 from .forms import ProductForm
 from users.models import Vendor
 
+# View to browse available products with optional search and category filters
 def browse_products(request):
     query = request.GET.get('q')
     category = request.GET.get('category')
@@ -21,6 +22,7 @@ def browse_products(request):
 
     return render(request, 'products/browse_products.html', {'products': products})
 
+# View to display vendor's inventory of products
 @login_required
 def vendor_inventory(request):
     try:
@@ -31,6 +33,7 @@ def vendor_inventory(request):
     products = Product.objects.filter(vendor=vendor)
     return render(request, 'products/vendor_inventory.html', {'products': products})
 
+# View to add a new product for the logged-in vendor
 @login_required
 def add_product(request):
     try:
@@ -51,6 +54,7 @@ def add_product(request):
 
     return render(request, 'products/add_product.html', {'form': form})
 
+# View to edit an existing product of the logged-in vendor
 @login_required
 def edit_product(request, product_id):
     try:
@@ -75,6 +79,7 @@ def edit_product(request, product_id):
 
     return render(request, 'products/edit_product.html', {'form': form, 'product': product})
 
+# View to update stock quantity of a product for the logged-in vendor
 @login_required
 def update_stock(request, product_id):
     try:
@@ -91,6 +96,7 @@ def update_stock(request, product_id):
             product.save()
     return redirect('vendor_inventory')
 
+# View to delete a product from the logged-in vendor's inventory
 @login_required
 def delete_product(request, product_id):
     try:

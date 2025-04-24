@@ -56,3 +56,6 @@ https://themewagon.com/themes/organic/
 
 Bootstrap 5.3 (Latest stable)
 https://getbootstrap.com
+
+Emojis 
+https://emojipedia.org/

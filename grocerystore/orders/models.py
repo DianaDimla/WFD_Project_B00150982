@@ -2,6 +2,7 @@ from django.db import models
 from users.models import Customer
 from products.models import Product
 
+# Model representing a customer's order
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
@@ -17,6 +18,7 @@ class Order(models.Model):
     def __str__(self):
         return f"Order #{self.id} by {self.customer.user.username}"
 
+# Model representing details of products in an order
 class OrderDetail(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='details')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -27,6 +29,7 @@ class OrderDetail(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.product.name}"
 
+# Model representing payment information for an order
 class Payment(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE)
     payment_date = models.DateTimeField(auto_now_add=True)

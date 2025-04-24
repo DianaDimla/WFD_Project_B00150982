@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+# URL patterns for product-related views including browsing products, vendor inventory management,
+# adding, editing, updating stock, and deleting products
 urlpatterns = [
     path('browse/', views.browse_products, name='browse_products'),
     path('inventory/', views.vendor_inventory, name='vendor_inventory'),

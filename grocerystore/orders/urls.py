@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+# URL patterns for the orders app, including cart, checkout, order history, vendor and delivery agent views
 urlpatterns = [
     # Cart
     path('cart/', views.cart_view, name='cart'),

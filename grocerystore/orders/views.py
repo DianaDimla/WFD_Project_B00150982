@@ -6,14 +6,14 @@ from users.decorators import delivery_agent_required
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 
-# ----- Helper to get customer -----
+# Helper function to get the customer object for the logged-in user
 def get_customer(user):
     try:
         return Customer.objects.get(user=user)
     except Customer.DoesNotExist:
         return None
 
-# ----- View Cart -----
+# View to display the shopping cart contents
 @login_required
 def cart_view(request):
     customer = get_customer(request.user)
@@ -32,7 +32,7 @@ def cart_view(request):
         'total': round(total, 2)
     })
 
-# ----- Add to Cart -----
+# View to add a product to the shopping cart
 @login_required
 def add_to_cart(request, product_id):
     cart = request.session.get('cart', {})
@@ -40,7 +40,7 @@ def add_to_cart(request, product_id):
     request.session['cart'] = cart
     return redirect('cart')
 
-# ----- Remove from Cart -----
+# View to remove a product from the shopping cart
 @login_required
 def remove_from_cart(request, product_id):
     cart = request.session.get('cart', {})
@@ -49,7 +49,7 @@ def remove_from_cart(request, product_id):
         request.session['cart'] = cart
     return redirect('cart')
 
-# ----- Checkout -----
+# View to handle the checkout process
 @login_required
 def checkout_view(request):
     customer = get_customer(request.user)
@@ -74,7 +74,7 @@ def checkout_view(request):
                 'error': "Please provide delivery address and payment method."
             })
 
-        # Save the order
+        # Create a new order with the provided details
         order = Order.objects.create(
             customer=customer,
             status='Processing',
@@ -83,7 +83,7 @@ def checkout_view(request):
             payment_method=payment_method
         )
 
-        # Save each cart item as an OrderDetail
+        # Create order details for each item in the cart
         for item in cart_items:
             OrderDetail.objects.create(
                 order=order,
@@ -92,7 +92,7 @@ def checkout_view(request):
                 price_at_purchase=item['subtotal'] / item['quantity'] if item['quantity'] else 0
             )
 
-        # Clear the cart
+        # Clear the cart after successful checkout
         request.session['cart'] = {}
 
         return redirect('order_success')
@@ -102,12 +102,12 @@ def checkout_view(request):
         'total': round(total, 2)
     })
 
-# ----- Order Success Page -----
+# View to display order success confirmation
 @login_required
 def order_success_view(request):
     return render(request, 'orders/success.html')
 
-# ----- Order History -----
+# View to display the order history for the logged-in customer
 @login_required
 def order_history_view(request):
     customer = get_customer(request.user)
@@ -126,7 +126,7 @@ def order_history_view(request):
 
     return render(request, 'orders/order_history.html', {'orders': orders_with_totals})
 
-# ----- Track Order -----
+# View to track a specific order's details
 @login_required
 def track_order_view(request, order_id):
     customer = get_customer(request.user)
@@ -152,7 +152,7 @@ def track_order_view(request, order_id):
 
     return render(request, 'orders/track_order.html', {'order': order})
 
-# ----- Vendor Orders -----
+# View to display orders related to the logged-in vendor
 @login_required
 def vendor_orders_view(request):
     try:
@@ -175,7 +175,7 @@ def vendor_orders_view(request):
         'orders_totals': orders_totals,
     })
 
-# ----- Fulfill Order -----
+# View to mark an order detail as fulfilled by the vendor
 @login_required
 def fulfill_order_view(request, order_detail_id):
     try:
@@ -187,23 +187,22 @@ def fulfill_order_view(request, order_detail_id):
     item.fulfilled = True
     item.save()
 
-    # Remove delivery agent assignment logic to allow all delivery agents to see fulfilled orders
     # No assignment of delivery_agent to order here
 
     return redirect('vendor_orders')
 
-# ----- Assigned Orders for Delivery Agent -----
+# View to show assigned orders for delivery agents
 @login_required
 @delivery_agent_required
 def assigned_orders_view(request):
     # Show all orders that have at least one fulfilled order detail and are ready for pickup
-    # Adjusted to include orders with status 'Pending' or 'Processing' to match actual statuses
     orders = Order.objects.filter(
         details__fulfilled=True,
         status__in=['Pending', 'Processing']
     ).distinct().order_by('-created_at')
     return render(request, 'orders/assigned_orders.html', {'orders': orders})
 
+# View for delivery agent to claim an order
 @login_required
 @delivery_agent_required
 def claim_order_view(request, order_id):
@@ -213,11 +212,10 @@ def claim_order_view(request, order_id):
     order.save()
     return redirect('assigned_orders')
 
-# ----- Update Delivery Status -----
+# View to update the delivery status of an order
 @login_required
 @delivery_agent_required
 def update_delivery_status(request, order_id):
-    # Removed delivery_agent filter to allow all delivery agents to update any fulfilled order
     order = get_object_or_404(Order, id=order_id)
 
     # Calculate items and total for the order
@@ -244,11 +242,10 @@ def update_delivery_status(request, order_id):
 
     return render(request, 'orders/order_detail_delivery.html', {'order': order})
 
-# ----- Order Detail Delivery View -----
+# View to display order details for delivery agents
 @login_required
 @delivery_agent_required
 def order_detail_delivery_view(request, order_id):
-    # Removed delivery_agent filter to allow all delivery agents to view any fulfilled order
     order = get_object_or_404(Order, id=order_id)
 
     # Calculate items and total for the order
